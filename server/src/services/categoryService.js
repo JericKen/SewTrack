@@ -25,7 +25,78 @@ async function getCategories() {
     return categories;
 }
 
+async function getCategoryById(id) {
+    const category = await prisma.category.findFirst({
+        where: {
+            id: Number(id),
+            isActive: true
+        }, 
+        select: {
+            id: true,
+            name: true,
+            description: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
+
+    return category;
+}
+
+async function updateCategory(id, data) {
+
+    const existingCategory = await prisma.category.findFirst({
+        where: {
+            id: Number(id),
+            isActive: true
+        }
+    });
+
+    if (!existingCategory) {
+        return null;
+    }
+
+    return prisma.category.update({
+        where: {
+            id: Number(id)
+        },
+        data: {
+            name: data.name,
+            description: data.description
+        }
+    });
+
+}
+
+async function deleteCategory(id) {
+    
+    const category = await prisma.category.findFirst({
+        where: {
+            id: Number(id),
+            isActive: true
+        }
+    });
+
+    if (!category) {
+        return null;
+    }
+
+    return prisma.category.update({
+        where: {
+            id: Number(id)
+        },
+        data: {
+            isActive: false
+        }
+    });
+
+}
+
 module.exports = {
     createCategory,
-    getCategories
+    getCategories,
+    getCategoryById,
+    updateCategory,
+    deleteCategory 
 };

@@ -28,7 +28,76 @@ const getCategories = asyncHandler(async (req, res) => {
 
 });
 
+const getCategoryById = asyncHandler(async (req, res) => {
+
+    const category = await categoryService.getCategoryById(req.params.id);
+
+    if (!category) {
+        return apiResponse.error(
+            res,
+            404,
+            "Category not found."
+        );
+    } 
+
+    return apiResponse.success(
+        res,
+        200,
+        "Category retrieved successfully.",
+        category
+    );
+
+});
+
+const updateCategory = asyncHandler(async (req, res) => {
+
+    const category = await categoryService.updateCategory(
+        req.params.id,
+        req.body
+    );
+
+    if (!category) {
+        return apiResponse.error(
+            res,
+            404,
+            "Category not found."
+        );
+    }
+
+    return apiResponse.success(
+        res,
+        200,
+        "Category updated successfully.",
+        category
+    );
+
+});
+
+const deleteCategory = asyncHandler(async (req, res) => {
+
+    const category = await categoryService.deleteCategory(req.params.id);
+
+    if (!category) {
+        return apiResponse.error(
+            res,
+            404,
+            "Category not found."
+        );
+    }
+
+    return apiResponse.success(
+        res,
+        200,
+        "Category deleted successfully.",
+        category
+    );
+
+})
+
 module.exports = {
     createCategory,
-    getCategories
+    getCategories,
+    getCategoryById,
+    updateCategory,
+    deleteCategory
 };
