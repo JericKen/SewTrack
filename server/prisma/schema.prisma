@@ -18,6 +18,12 @@ enum ProductType {
   MATERIAL
 }
 
+enum PaymentMethod {
+  CASH
+  GCASH
+  BANK_TRANSFER
+}
+
 enum Unit {
   PCS
   METER
@@ -49,7 +55,7 @@ enum StockReferenceType {
   SALE
   REPAIR
   ADJUSTMENT
-}
+} 
 
 model User {
   id        Int      @id @default(autoincrement())
@@ -101,6 +107,8 @@ model Product {
 
   stockQuantity   Int      @default(0)
   minimumStock    Int      @default(5)
+
+  saleItems SaleItem[]
 
   unit            Unit
 
@@ -189,3 +197,44 @@ model StockTransaction {
 
   createdAt       DateTime @default(now())
 }
+
+model Sale {
+
+  id            Int      @id @default(autoincrement())
+
+  invoiceNo     String   @unique
+
+  customerName  String?
+
+  paymentMethod PaymentMethod
+
+  totalAmount   Decimal @db.Decimal(10,2)
+
+  remarks       String?
+
+  items         SaleItem[]
+
+  createdAt     DateTime @default(now())
+
+}
+
+model SaleItem {
+
+  id         Int @id @default(autoincrement())
+
+  saleId     Int
+
+  productId  Int
+
+  quantity   Int
+
+  unitPrice  Decimal @db.Decimal(10,2)
+
+  subtotal   Decimal @db.Decimal(10,2)
+
+  sale        Sale    @relation(fields: [saleId], references: [id])
+
+  product     Product @relation(fields: [productId], references: [id])
+
+}
+

@@ -18,7 +18,7 @@ async function getCategories() {
         where: {
             isActive: true
         },
-        orderBy: {
+        orderBy:    {
             name: "asc"
         }
     });
