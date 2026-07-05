@@ -9,6 +9,13 @@ datasource db {
 
 enum Role {
   ADMIN
+  STAFF
+}
+
+enum ProductType {
+  RESALE
+  MANUFACTURED
+  MATERIAL
 }
 
 enum Unit {
@@ -17,13 +24,40 @@ enum Unit {
   PACK
   PAIR
   ROLL
+  BUNDLE
+}
+
+enum StockTransactionType {
+  IN
+  OUT
+  ADJUSTMENT
+}
+
+enum StockReason {
+  INITIAL_STOCK
+  PURCHASE
+  SALE
+  REPAIR_USED
+  DAMAGED
+  PERSONAL_USE
+  ADJUSTMENT
+  RETURN
+}
+
+enum StockReferenceType {
+  PURCHASE
+  SALE
+  REPAIR
+  ADJUSTMENT
 }
 
 model User {
   id        Int      @id @default(autoincrement())
+
   name      String
   email     String   @unique
   password  String
+
   role      Role     @default(ADMIN)
 
   createdAt DateTime @default(now())
@@ -32,8 +66,11 @@ model User {
 
 model Category {
   id          Int      @id @default(autoincrement())
+
+  code        String   @unique
   name        String   @unique
   description String?
+
   isActive    Boolean  @default(true)
 
   products    Product[]
@@ -43,28 +80,112 @@ model Category {
 }
 
 model Product {
-  id             Int       @id @default(autoincrement())
-  categoryId     Int
+  id              Int      @id @default(autoincrement())
+
+  categoryId      Int
+
+  name            String
+  description     String?
+
+  sku             String   @unique
+  barcode         String?  @unique
+
+  type            ProductType
+
+  costPrice       Decimal  @db.Decimal(10,2)
+  sellingPrice    Decimal  @db.Decimal(10,2)
+  
+  purchaseItems      PurchaseItem[]
+
+  stockTransactions  StockTransaction[]
+
+  stockQuantity   Int      @default(0)
+  minimumStock    Int      @default(5)
+
+  unit            Unit
+
+  imageUrl        String?
+
+  isActive        Boolean  @default(true)
+
+  category         Category @relation(fields: [categoryId], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Supplier {
+  id             Int      @id @default(autoincrement())
 
   name           String
-  description    String?
-  sku            String?   @unique
-  barcode        String?   @unique
+  contactPerson  String?
+  phone          String?
+  email          String?
+  address        String?
+  remarks        String?
 
-  costPrice      Decimal
-  sellingPrice   Decimal
+  isActive       Boolean  @default(true)
 
-  stockQuantity  Int       @default(0)
-  minimumStock   Int       @default(5)
+  purchases      Purchase[]
 
-  unit           Unit
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
 
-  imageUrl       String?
+model Purchase {
+  id             Int      @id @default(autoincrement())
 
-  isActive       Boolean   @default(true)
+  supplierId     Int?
 
-  category       Category  @relation(fields: [categoryId], references: [id])
+  purchasedAt    DateTime @default(now())
 
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  referenceNo    String?
+
+  totalAmount    Decimal   @db.Decimal(10,2)
+
+  remarks        String?
+
+  supplier        Supplier? @relation(fields: [supplierId], references: [id])
+
+  items           PurchaseItem[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model PurchaseItem {
+  id          Int      @id @default(autoincrement())
+
+  purchaseId  Int
+  productId   Int
+
+  quantity    Int
+
+  unitCost    Decimal @db.Decimal(10,2)
+
+  purchase    Purchase @relation(fields: [purchaseId], references: [id])
+
+  product     Product @relation(fields: [productId], references: [id])
+}
+
+model StockTransaction {  
+  id              Int      @id @default(autoincrement())
+
+  productId       Int
+
+  type            StockTransactionType
+
+  reason          StockReason
+
+  quantity        Int
+
+  referenceType   StockReferenceType?
+
+  referenceId     Int?
+
+  remarks         String?
+
+  product         Product @relation(fields: [productId], references: [id])
+
+  createdAt       DateTime @default(now())
 }

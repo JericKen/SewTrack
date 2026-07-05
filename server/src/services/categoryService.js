@@ -4,6 +4,7 @@ async function createCategory(data) {
 
     const category = await prisma.category.create({
         data: {
+            code: data.code,
             name: data.name,
             description: data.description
         }
@@ -33,6 +34,7 @@ async function getCategoryById(id) {
         }, 
         select: {
             id: true,
+            code: true,
             name: true,
             description: true,
             isActive: true,
@@ -62,6 +64,7 @@ async function updateCategory(id, data) {
             id: Number(id)
         },
         data: {
+            code: data.code,
             name: data.name,
             description: data.description
         }
