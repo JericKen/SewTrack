@@ -5,6 +5,11 @@ const purchaseController = require("../controllers/purchaseController");
 const validate = require("../middleware/validate");
 const { createPurchaseSchema } = require("../validators/purchaseValidator");
 
+router.get(
+    "/", 
+    purchaseController.getPurchases
+);
+
 router.post(
     "/",
     validate(createPurchaseSchema),

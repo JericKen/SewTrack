@@ -143,7 +143,7 @@ model Supplier {
 model Purchase {
   id             Int      @id @default(autoincrement())
 
-  supplierId     Int?
+  supplier Id     Int?
 
   purchasedAt    DateTime @default(now())
 
