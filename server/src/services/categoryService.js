@@ -1,4 +1,5 @@
 const prisma = require("../config/prisma");
+const AppError = require("../utils/appError");
 
 async function createCategory(data) {
 
@@ -43,6 +44,10 @@ async function getCategoryById(id) {
         }
     });
 
+    if (!category) {
+        throw new AppError("Category not found.", 404);
+    }
+
     return category;
 }
 
@@ -56,7 +61,7 @@ async function updateCategory(id, data) {
     });
 
     if (!existingCategory) {
-        return null;
+        throw new AppError("Category not found.", 404);
     }
 
     return prisma.category.update({
@@ -82,7 +87,7 @@ async function deleteCategory(id) {
     });
 
     if (!category) {
-        return null;
+        throw new AppError("Category not found.", 404);
     }
 
     return prisma.category.update({

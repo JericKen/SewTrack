@@ -6,14 +6,6 @@ const createProduct = asyncHandler(async (req, res) => {
 
     const product = await productService.createProduct(req.body);
 
-    if (!product) {
-        return apiResponse.error(
-            res,
-            404,
-            "Category not found."
-        );
-    }
-
     return apiResponse.success(
         res,
         201,

@@ -1,5 +1,6 @@
 const prisma = require("../config/prisma");
 const generateSku = require("../utils/skuGenerator");
+const AppError = require("../utils/appError");
 
 async function createProduct(data) {
 
@@ -11,7 +12,7 @@ async function createProduct(data) {
     });
 
     if (!category) {
-        return null;
+        throw new AppError("Category not found.", 404);
     }
 
     const latestProduct = await prisma.product.findFirst({

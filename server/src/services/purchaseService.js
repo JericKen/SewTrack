@@ -5,6 +5,9 @@ const { getSort } = require("../utils/sort");
 const { contains } = require("../utils/search");
 const { get } = require("../routes/purchaseRoutes");
 
+const stockService = require("../services/stockService");
+const AppError = require("../utils/appError");
+
 async function getPurchases(query) {
 
     const { page, limit, skip } = getPagination(query);
@@ -112,10 +115,16 @@ async function processPurchaseItems(
             item
         );
 
-        await increaseStock(
-            tx,
-            item
-        );
+        await stockService.increaseStock(tx, {
+
+            productId: item.productId,
+            quantity: item.quantity,
+            reason: "PURCHASE",
+            referenceType: "PURCHASE",
+            referenceId: purchase.id,
+            remarks: "Stock added from purchase"
+
+        });
 
         await createStockMovement(
             tx,

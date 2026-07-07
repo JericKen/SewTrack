@@ -1,8 +1,6 @@
-const prisma = require("../config/prisma");
+async function generateInvoiceNumber(tx) {
 
-async function generateInvoiceNumber() {
-
-    const latestSale = await prisma.sale.findFirst({
+    const latestSale = await tx.sale.findFirst({
         orderBy: {
             id: "desc"
         }

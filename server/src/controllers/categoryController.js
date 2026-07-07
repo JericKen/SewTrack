@@ -32,14 +32,6 @@ const getCategoryById = asyncHandler(async (req, res) => {
 
     const category = await categoryService.getCategoryById(req.params.id);
 
-    if (!category) {
-        return apiResponse.error(
-            res,
-            404,
-            "Category not found."
-        );
-    } 
-
     return apiResponse.success(
         res,
         200,
@@ -56,14 +48,6 @@ const updateCategory = asyncHandler(async (req, res) => {
         req.body
     );
 
-    if (!category) {
-        return apiResponse.error(
-            res,
-            404,
-            "Category not found."
-        );
-    }
-
     return apiResponse.success(
         res,
         200,
@@ -76,14 +60,6 @@ const updateCategory = asyncHandler(async (req, res) => {
 const deleteCategory = asyncHandler(async (req, res) => {
 
     const category = await categoryService.deleteCategory(req.params.id);
-
-    if (!category) {
-        return apiResponse.error(
-            res,
-            404,
-            "Category not found."
-        );
-    }
 
     return apiResponse.success(
         res,

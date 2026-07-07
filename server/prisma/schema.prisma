@@ -24,6 +24,11 @@ enum PaymentMethod {
   BANK_TRANSFER
 }
 
+enum SaleStatus {
+  COMPLETED
+  VOIDED
+}
+
 enum Unit {
   PCS
   METER
@@ -143,7 +148,7 @@ model Supplier {
 model Purchase {
   id             Int      @id @default(autoincrement())
 
-  supplier Id     Int?
+  supplierId     Int?
 
   purchasedAt    DateTime @default(now())
 
@@ -187,6 +192,8 @@ model StockTransaction {
 
   quantity        Int
 
+  balanceAfter    Int
+
   referenceType   StockReferenceType?
 
   referenceId     Int?
@@ -207,6 +214,8 @@ model Sale {
   customerName  String?
 
   paymentMethod PaymentMethod
+
+  status        SaleStatus @default(COMPLETED)
 
   totalAmount   Decimal @db.Decimal(10,2)
 
@@ -238,3 +247,16 @@ model SaleItem {
 
 }
 
+model CashSession {
+
+  id Int @id @default(autoincrement())
+
+  sessionDate DateTime @unique
+
+  openingCash Decimal @db.Decimal(10,2)
+
+  notes String?
+
+  createdAt DateTime @default(now())
+
+}
