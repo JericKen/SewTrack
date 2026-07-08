@@ -2,6 +2,19 @@ const productService = require("../services/productService");
 const asyncHandler = require("../utils/asyncHandler");
 const apiResponse = require("../utils/apiResponse");
 
+const getProducts = asyncHandler(async (req, res) => {
+
+    const products = await productService.getProducts();
+
+    return apiResponse.success(
+        res,
+        200,
+        "Products retrieve successfully.",
+        products
+    );
+    
+});
+
 const createProduct = asyncHandler(async (req, res) => {
 
     const product = await productService.createProduct(req.body);
@@ -16,5 +29,6 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-    createProduct
+    getProducts,
+    createProduct,
 };

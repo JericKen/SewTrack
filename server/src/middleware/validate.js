@@ -1,9 +1,12 @@
 const apiResponse = require("../utils/apiResponse");
 
-function validate(schema) {
+function validate(schema, source = "body") {
+
     return (req, res, next) => {
 
-        const result = schema.safeParse(req.body);
+        const data = req[source];
+
+        const result = schema.safeParse(data);
 
         if (!result.success) {
 
@@ -15,10 +18,12 @@ function validate(schema) {
 
         }
 
-        req.body = result.data;
+        req[source] = result.data;
 
         next();
+
     };
+
 }
 
 module.exports = validate;

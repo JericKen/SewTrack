@@ -3,8 +3,6 @@ const prisma = require("../config/prisma");
 const { getPagination } = require("../utils/pagination");
 const { getSort } = require("../utils/sort");
 const { contains } = require("../utils/search");
-const { get } = require("../routes/purchaseRoutes");
-
 const stockService = require("../services/stockService");
 const AppError = require("../utils/appError");
 
@@ -121,16 +119,10 @@ async function processPurchaseItems(
             quantity: item.quantity,
             reason: "PURCHASE",
             referenceType: "PURCHASE",
-            referenceId: purchase.id,
+            referenceId: purchaseId,
             remarks: "Stock added from purchase"
 
         });
-
-        await createStockMovement(
-            tx,
-            purchaseId,
-            item
-        );
 
     }
 }
@@ -169,26 +161,6 @@ async function increaseStock(
         }
 
     })
-}
-
-async function createStockMovement(
-    tx,
-    purchaseId,
-    item
-) {
-    return tx.stockTransaction.create({
-
-        data: {
-            productId: item.productId,
-            type: "IN",
-            reason: "PURCHASE",
-            quantity: item.quantity,
-            referenceType: "PURCHASE",
-            referenceId: purchaseId,
-            remarks: "Stock added from purchase."
-        }
-
-    });
 }
 
 module.exports = {

@@ -260,3 +260,26 @@ model CashSession {
   createdAt DateTime @default(now())
 
 }
+
+model Customer {
+
+  id          Int @id @default(autoincrement())
+
+  firstName   String
+
+  lastName    String?
+
+  phone       String?
+
+  address     String?
+
+  remarks     String?
+
+  isActive    Boolean @default(true)
+
+  repairs     RepairOrder[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+}

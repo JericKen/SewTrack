@@ -11,7 +11,7 @@ async function increaseStock(tx, data) {
 
         data: {
             stockQuantity: {
-                increase: data.quantity
+                increment: data.quantity
             }
         }
 

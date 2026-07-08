@@ -2,6 +2,20 @@ const prisma = require("../config/prisma");
 const generateSku = require("../utils/skuGenerator");
 const AppError = require("../utils/appError");
 
+async function getProducts() {
+    
+    const products = await prisma.product.findMany({
+        where: {
+            isActive: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+
+    return products;
+}
+
 async function createProduct(data) {
 
     const category = await prisma.category.findFirst({
@@ -59,5 +73,6 @@ async function createProduct(data) {
 }
 
 module.exports = {
-    createProduct
+    getProducts,
+    createProduct,
 };
