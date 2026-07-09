@@ -9,6 +9,7 @@ const purchaseRoutes = require("./routes/purchaseRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const repairOrderRoutes = require("./routes/repairOrderRoutes");
+const expenseRoutes = require("./routes/expenseRoute");
 
 const errorHandler = require("./middleware/errorHandler");
 
@@ -31,6 +32,7 @@ app.use("/api/purchases", purchaseRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/repair-orders", repairOrderRoutes);
+app.use("/api/expenses", expenseRoutes);
 
 
 app.use(errorHandler);
