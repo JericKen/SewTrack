@@ -194,10 +194,87 @@ async function archiveCustomer(id) {
 
 }
 
+async function getCustomerRepairHistory(customerId) {
+
+    const customer = await prisma.customer.findFirst({
+
+        where: {
+
+            id: customerId,
+
+            isActive: true
+
+        }
+
+    });
+
+    if (!customer) {
+
+        throw new AppError("Customer not found.", 404);
+
+    }
+
+    const repairs = await prisma.repairOrder.findMany({
+
+        where: {
+
+            customerId
+
+        },
+
+        orderBy: {
+
+            receivedAt: "desc"
+
+        },
+
+        select: {
+
+            id: true,
+
+            itemType: true,
+
+            description: true,
+
+            repairCost: true,
+
+            status: true,
+
+            receivedAt: true,
+
+            dueDate: true,
+
+            completedAt: true
+
+        }
+
+    });
+
+    return {
+
+        customer: {
+
+            id: customer.id,
+
+            firstName: customer.firstName,
+
+            lastName: customer.lastName,
+
+            phone: customer.phone
+
+        },
+
+        repairs
+
+    };
+
+}
+
 module.exports = {
     createCustomer,
     getCustomers,
     getCustomerById,
     updateCustomer,
-    archiveCustomer
+    archiveCustomer,
+    getCustomerRepairHistory
 };

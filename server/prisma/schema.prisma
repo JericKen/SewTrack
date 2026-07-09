@@ -306,7 +306,7 @@ model RepairOrder {
 
   description   String
 
-  repairCost    Decimal   @db.Decimal(10,2)
+  repairCost    Decimal?   @db.Decimal(10,2)
 
   status        RepairStatus @default(PENDING)
 

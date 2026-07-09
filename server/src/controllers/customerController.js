@@ -88,10 +88,33 @@ const archiveCustomer = asyncHandler(async (req, res) => {
 
 });
 
+const getCustomerRepairHistory = asyncHandler(async (req, res) => {
+
+    const history = await customerService.getCustomerRepairHistory(
+
+        Number(req.params.id)
+
+    );
+
+    return apiResponse.success(
+
+        res,
+
+        200,
+
+        "Customer repair history retrieved successfully.",
+
+        history
+
+    );
+
+});
+
 module.exports = {
     createCustomer,
     getCustomers,
     getCustomerById,
     updateCustomer,
-    archiveCustomer
+    archiveCustomer,
+    getCustomerRepairHistory
 };

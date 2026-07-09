@@ -25,6 +25,12 @@ router.get(
 );
 
 router.get(
+    "/:id/repairs",
+    validate(customerIdSchema, "params"),
+    customerController.getCustomerRepairHistory
+);
+
+router.get(
     "/:id",
     validate(customerIdSchema, "params"),
     customerController.getCustomerById
@@ -42,5 +48,6 @@ router.delete(
     validate(customerIdSchema, "params"),
     customerController.archiveCustomer
 );
+
 
 module.exports = router;
