@@ -10,6 +10,8 @@ const inventoryRoutes = require("./routes/inventoryRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const repairOrderRoutes = require("./routes/repairOrderRoutes");
 const expenseRoutes = require("./routes/expenseRoute");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 const errorHandler = require("./middleware/errorHandler");
 
@@ -33,6 +35,8 @@ app.use("/api/inventory", inventoryRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/repair-orders", repairOrderRoutes);
 app.use("/api/expenses", expenseRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/reports", reportRoutes);
 
 
 app.use(errorHandler);
