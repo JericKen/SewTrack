@@ -38,6 +38,7 @@ app.use("/api/expenses", expenseRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/reports", reportRoutes);
 
+app.set("trust proxy", 1);
 
 app.use(errorHandler);
 
